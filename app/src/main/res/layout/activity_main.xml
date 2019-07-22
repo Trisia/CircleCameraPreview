@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!--
+    必须设置
+    1. 长宽比为 4:3 比如 width: 400 height: 300
+    2. 必须设置 background ，建议使用 透明（@android:color/transparent），否则draw中的剪切无效
+    -->
+    <com.hznu.demo.app.circlecameraview.CircleCameraPreview
+        android:id="@+id/circle_camera_preview"
+        android:layout_gravity="center"
+        android:layout_width="400dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="100dp"
+        android:background="@android:color/transparent" />
+</LinearLayout>
