@@ -30,7 +30,7 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
     /**
      * 相机ID
      */
-    private static final int CAMERA_ID = Camera.CameraInfo.CAMERA_FACING_FRONT;
+    private static final int CAMERA_ID = Camera.CameraInfo.CAMERA_FACING_BACK;
 
     /**
      * 相机对象
