@@ -2,18 +2,21 @@ package com.hznu.demo.app.circlecameraview;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.ImageFormat;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Region;
 import android.hardware.Camera;
-import android.support.v4.content.ContextCompat;
+import android.os.Build;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,15 +25,11 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
 
     private static final String TAG = "CircleCameraPreview";
 
-    /**
-     * 相机需要的权限
-     */
-    private static final String[] NEEDED_PERMISSION = {Manifest.permission.CAMERA};
 
     /**
      * 相机ID
      */
-    private static final int CAMERA_ID = Camera.CameraInfo.CAMERA_FACING_BACK;
+    private static final int CAMERA_ID = Camera.CameraInfo.CAMERA_FACING_FRONT;
 
     /**
      * 相机对象
@@ -72,11 +71,6 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
      * 初始化
      */
     private void init() {
-        if (ContextCompat.checkSelfPermission(getContext().getApplicationContext(), NEEDED_PERMISSION[0])
-                != PackageManager.PERMISSION_GRANTED) {
-            throw new RuntimeException("没有相机权限");
-        }
-
         this.setFocusable(true);
         this.setFocusableInTouchMode(true);
         getHolder().addCallback(this);
@@ -108,7 +102,13 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
             clipPath.addCircle(centerPoint.x, centerPoint.y, radius, Path.Direction.CCW);
         }
         //裁剪画布，并设置其填充方式
-        canvas.clipPath(clipPath, Region.Op.REPLACE);
+//        canvas.clipPath(clipPath, Region.Op.REPLACE);
+
+        if (Build.VERSION.SDK_INT >= 26) {
+            canvas.clipPath(clipPath);
+        } else {
+            canvas.clipPath(clipPath, Region.Op.REPLACE);
+        }
         super.draw(canvas);
     }
 
@@ -144,17 +144,76 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
             }
         }
 
-        Log.i(TAG, "openCamera: Go...");
         // 获取支持的最大的 4:3 比例尺寸图片尺寸
         Camera.Size maxSize = getMaxPictureSize(params);
+
         // 设置预览尺寸为图像尺寸
         params.setPreviewSize(maxSize.width, maxSize.height);
         // 设置预览编码图像编码格式为 NV21
         params.setPreviewFormat(ImageFormat.NV21);
         mCamera.setParameters(params);
-        mCamera.setDisplayOrientation(0);
+        int rotate = getRotateAngle();
+        changeViewSize(rotate);
+        mCamera.setDisplayOrientation(rotate);
 
         mCamera.startPreview();
+    }
+
+    /**
+     * 根据相机旋转动态修改view的尺寸
+     * <p>
+     * 以抵消失真的现象
+     *
+     * @param rotate 旋转角度
+     */
+    private void changeViewSize(int rotate) {
+        DisplayMetrics metrics = new DisplayMetrics();
+        ((WindowManager) getContext()
+                .getSystemService(Context.WINDOW_SERVICE))
+                .getDefaultDisplay().getMetrics(metrics);
+
+        ViewGroup.LayoutParams layoutParams = this.getLayoutParams();
+        if (rotate == 0) {
+            layoutParams.height = layoutParams.width * 3 / 4;
+        } else {
+            layoutParams.width = layoutParams.width * 3 / 4;
+        }
+        this.setLayoutParams(layoutParams);
+    }
+
+
+    private int getRotateAngle() {
+        Camera.CameraInfo info = new Camera.CameraInfo();
+        Camera.getCameraInfo(CAMERA_ID, info);
+        // 获取当前手机的选装角度
+        int rotation = ((WindowManager) getContext()
+                .getSystemService(Context.WINDOW_SERVICE))
+                .getDefaultDisplay()
+                .getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0:
+                degrees = 0;
+                break;
+            case Surface.ROTATION_90:
+                degrees = 90;
+                break;
+            case Surface.ROTATION_180:
+                degrees = 180;
+                break;
+            case Surface.ROTATION_270:
+                degrees = 270;
+                break;
+        }
+
+        int result;
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            result = (info.orientation + degrees) % 360;
+            result = (360 - result) % 360;
+        } else {
+            result = (info.orientation - degrees + 360) % 360;
+        }
+        return result;
     }
 
     /**
@@ -183,7 +242,8 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
         Camera.Size maxSize = null;
 
         for (Camera.Size size : previewSizes) {
-            Log.d(TAG, "Support size: " + size.width + " x " + size.height);
+            Log.i(TAG, "Support size -> " + size.width + " x " + size.height);
+
             int gcd = gcd(size.width, size.height);
             int w = size.width / gcd;
             int h = size.height / gcd;
@@ -192,7 +252,7 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
                 maxSize = size;
             }
         }
-        Log.d(TAG, "Max 4:3 -> " + maxSize.width + " x " + maxSize.height);
+        Log.i(TAG, "Max 4:3 -> " + maxSize.width + " x " + maxSize.height);
         return maxSize;
     }
 
