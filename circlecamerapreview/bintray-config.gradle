@@ -1,0 +1,29 @@
+ext {
+    bintrayRepo = 'openhub'   //仓库名
+    bintrayName = 'circlecamerapreview'    //pack名
+
+    publishedGroupId = 'com.github.cliven.circlecamerapreview'
+    artifact = 'circlecamerapreview'
+    libraryVersion = '1.0.0'
+
+    //开源库的描述
+    libraryName = 'uploadmodule'
+    libraryDescription = ''
+    siteUrl = 'https://github.com/Trisia'
+
+    //开源库对应的 github 地址
+    gitUrl = 'https://github.com/Trisia/CircleCameraPreview'
+
+    //开发者信息
+    developerId = 'quanguanyu'
+    developerName = '观宇'
+    developerEmail = 'quanguanyu@qq.com'
+
+    //开源协议相关
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+apply from: 'bintrayv1.gradle'
+apply from: 'installv1.gradle'
