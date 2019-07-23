@@ -40,8 +40,8 @@ if (ContextCompat.checkSelfPermission(this.getApplicationContext(), NEEDED_PERMI
 
 1. 在xml中引用组件设置 宽高比为 1:1，背景为透明。
 2. 找到相机支持最大的 4:3比例（该比例应该与）的照片尺寸，设置相机参数。
-3. 根据相机和屏幕角度，动态调整view的`width` 和 `height`防止预览图片失真。
-4. 重写`onMeasure`，计算出圆形的半径和真正的宽高像素。
+3. 根据相机和屏幕角度，动态调整view的`width` 和 `height`以适应图片比例，防止预览图片失真。
+4. 重写SurfaceView的`onMeasure`，计算出圆形的半径和真正的宽高像素。
 ```java
 protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -55,7 +55,7 @@ protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     setMeasuredDimension(widthSize, heightSize);
 }
 ```
-4. 在重写`draw`方法，在绘制之前，首先创建圆形路径并进行裁剪。
+5. 重写SurfaceView的`draw`方法，在绘制之前，首先创建圆形路径并进行裁剪。
 ```java
 public void draw(Canvas canvas) {
     if (clipPath == null) {
@@ -68,3 +68,8 @@ public void draw(Canvas canvas) {
     super.draw(canvas);
 }
 ```
+
+
+## 致谢
+
+[1]. [CSDN . minyou_1314 . https://blog.csdn.net/minyou_1314/article/details/50971866](https://blog.csdn.net/minyou_1314/article/details/50971866)
