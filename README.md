@@ -4,6 +4,10 @@
 ![效果示例](./img/demo.png)
 
 
+如果老铁还可以，不用请我和阔乐，不入就给我的个小星星 O_O
+
+[源码地址 . GitHub](https://github.com/Trisia/CircleCameraPreview)
+
 ## Quick Start
 
 `AndroidManifest.xml` 加入相机使用权限
