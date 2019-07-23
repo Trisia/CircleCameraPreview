@@ -1,5 +1,9 @@
 # 相机圆形窗口预览
 
+
+![效果示例](./img/demo.png)
+
+
 ## Quick Start
 
 `AndroidManifest.xml` 加入相机使用权限
