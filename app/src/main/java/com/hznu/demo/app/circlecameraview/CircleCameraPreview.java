@@ -1,6 +1,5 @@
 package com.hznu.demo.app.circlecameraview;
 
-import android.Manifest;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.ImageFormat;
@@ -24,7 +23,6 @@ import java.util.List;
 public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
     private static final String TAG = "CircleCameraPreview";
-
 
     /**
      * 相机ID
@@ -152,10 +150,13 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
         // 设置预览编码图像编码格式为 NV21
         params.setPreviewFormat(ImageFormat.NV21);
         mCamera.setParameters(params);
+        // 获取相机应旋转角度
         int rotate = getRotateAngle();
+        // 根据旋转角度调整view的宽高
         changeViewSize(rotate);
         mCamera.setDisplayOrientation(rotate);
 
+        // 开始相机预览
         mCamera.startPreview();
     }
 
