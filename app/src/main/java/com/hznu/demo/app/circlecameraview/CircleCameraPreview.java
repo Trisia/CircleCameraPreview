@@ -49,6 +49,11 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
      */
     private Path clipPath;
 
+    /**
+     * 是否在预览
+     */
+    private boolean isPreviewing;
+
 
     public CircleCameraPreview(Context context) {
         super(context);
@@ -72,6 +77,24 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
         this.setFocusable(true);
         this.setFocusableInTouchMode(true);
         getHolder().addCallback(this);
+    }
+
+
+    /**
+     * 暂停预览功能
+     *
+     * @return true - 开启预览； false - 暂停预览
+     */
+    public boolean pause() {
+        Log.i(TAG, "pause: " + isPreviewing);
+        if (isPreviewing) {
+            isPreviewing = false;
+            mCamera.stopPreview();
+        } else {
+            isPreviewing = true;
+            mCamera.startPreview();
+        }
+        return isPreviewing;
     }
 
     @Override
@@ -158,6 +181,8 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
 
         // 开始相机预览
         mCamera.startPreview();
+
+        isPreviewing = true;
     }
 
     /**

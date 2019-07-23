@@ -49,6 +49,10 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
      */
     private Path clipPath;
 
+    /**
+     * 是否在预览
+     */
+    private boolean isPreviewing;
 
     public CircleCameraPreview(Context context) {
         super(context);
@@ -86,6 +90,23 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
         radius = (widthSize >> 1 > heightSize >> 1) ? heightSize >> 1 : widthSize >> 1;
         setMeasuredDimension(widthSize, heightSize);
     }
+    /**
+     * 暂停预览功能
+     *
+     * @return true - 开启预览； false - 暂停预览
+     */
+    public boolean pause() {
+        Log.i(TAG, "pause: " + isPreviewing);
+        if (isPreviewing) {
+            isPreviewing = false;
+            mCamera.stopPreview();
+        } else {
+            isPreviewing = true;
+            mCamera.startPreview();
+        }
+        return isPreviewing;
+    }
+
 
     /**
      * 绘制

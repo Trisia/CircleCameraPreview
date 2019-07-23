@@ -19,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
     private CircleCameraPreview circleCameraPreview;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
         circleCameraPreview = findViewById(R.id.circle_camera_preview);
         circleCameraPreview.setOnPreview((nv21, camera) -> {
             // 人脸识别代码
+        });
+
+        circleCameraPreview.setOnClickListener((v)->{
+            circleCameraPreview.pause();
         });
     }
 
