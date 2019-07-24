@@ -64,6 +64,11 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
      */
     private boolean isSizeFitted = false;
 
+    /**
+     * 预览回调
+     */
+    private Camera.PreviewCallback previewCallback;
+
 
     public CircleCameraPreview(Context context) {
         super(context);
@@ -145,15 +150,10 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
     /**
      * 绘制
      *
-     * @param canvas
+     * @param canvas 画布
      */
     @Override
     public void draw(Canvas canvas) {
-        if (clipPath == null) {
-            clipPath = new Path();
-            //设置裁剪的圆心，半径
-
-        }
         //裁剪画布，并设置其填充方式
         if (Build.VERSION.SDK_INT >= 26) {
             canvas.clipPath(clipPath);
@@ -208,6 +208,11 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
         // 根据旋转角度调整view的宽高
         changeViewSize(rotate);
         mCamera.setDisplayOrientation(rotate);
+
+        if (previewCallback != null) {
+            // 设置预览回调
+            mCamera.setPreviewCallback(previewCallback);
+        }
 
         // 开始相机预览
         mCamera.startPreview();
@@ -278,6 +283,8 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
         return result;
     }
 
+
+
     /**
      * 相机预览回调
      *
@@ -285,6 +292,7 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
      * @return this
      */
     public CircleCameraPreview setOnPreview(Camera.PreviewCallback cb) {
+        previewCallback = cb;
         if (mCamera != null) {
             mCamera.setPreviewCallback(cb);
         }
