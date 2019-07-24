@@ -54,6 +54,7 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
      */
     private boolean isPreviewing;
 
+
     public CircleCameraPreview(Context context) {
         super(context);
         init();
@@ -78,18 +79,7 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
         getHolder().addCallback(this);
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        // 坐标转换为实际像素
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-        // 计算出圆形的中心点
-        centerPoint = new Point(widthSize >> 1, heightSize >> 1);
-        // 计算出最短的边的一半作为半径
-        radius = (widthSize >> 1 > heightSize >> 1) ? heightSize >> 1 : widthSize >> 1;
-        setMeasuredDimension(widthSize, heightSize);
-    }
+
     /**
      * 暂停预览功能
      *
@@ -107,6 +97,18 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
         return isPreviewing;
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        // 坐标转换为实际像素
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+        // 计算出圆形的中心点
+        centerPoint = new Point(widthSize >> 1, heightSize >> 1);
+        // 计算出最短的边的一半作为半径
+        radius = (widthSize >> 1 > heightSize >> 1) ? heightSize >> 1 : widthSize >> 1;
+        setMeasuredDimension(widthSize, heightSize);
+    }
 
     /**
      * 绘制
@@ -179,6 +181,8 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
 
         // 开始相机预览
         mCamera.startPreview();
+
+        isPreviewing = true;
     }
 
     /**
