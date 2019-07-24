@@ -1,14 +1,40 @@
 # 相机圆形窗口预览
 
-
-![效果示例](./img/demo.png)
-
+***言不如一图...***
+![效果图](./img/demo.png)
 
 如果老铁还可以，不用请我和阔乐，不入就给我的个小星星 O_O
 
 [源码地址 . GitHub](https://github.com/Trisia/CircleCameraPreview)
 
+
 ## Quick Start
+引入依赖
+```
+implementation 'com.github.cliven.circlecamerapreview:circlecamerapreview:1.0.1'
+```
+
+> 引用依赖`Gralde 4.0 `以前版本
+> ```
+> compile 'com.github.cliven.circlecamerapreview:circlecamerapreview:1.0.1'
+> ```
+
+
+
+在xml中引用组件
+```xml
+<com.hznu.demo.app.circlecameraview.CircleCameraPreview
+    android:layout_width="400dp"
+    android:layout_height="400dp"
+    android:background="@android:color/transparent" />
+```
+> 注意：
+>
+> - `width` 和 `height` 比例必须尽可能为 1:1，在真正绘制时可能会动态调整 `width` 和 `height`
+> - `background` 必须设置，某则无法显示圆形，建议设置为透明`@android:color/transparent`
+
+
+---
 
 `AndroidManifest.xml` 加入相机使用权限
 ```xml
@@ -26,21 +52,8 @@ if (ContextCompat.checkSelfPermission(this.getApplicationContext(), NEEDED_PERMI
 }
 ```
 
-
-在xml中引用组件
-```xml
-<com.hznu.demo.app.circlecameraview.CircleCameraPreview
-    android:layout_width="400dp"
-    android:layout_height="400dp"
-    android:background="@android:color/transparent" />
-```
-> 注意：
->
-> - `width` 和 `height` 比例必须尽可能为 1:1，在真正绘制时可能会动态调整 `width` 和 `height`
-> - `background` 必须设置，某则无法显示圆形，建议设置为透明`@android:color/transparent`
-
-
 ## 原理
+> **请结合 [CircleCameraPreview 源码](https://github.com/Trisia/CircleCameraPreview/blob/master/circlecamerapreview/src/main/java/com/github/cliven/circlecamerapreview/CircleCameraPreview.java)  阅读下面内容**
 
 1. 在xml中引用组件设置 宽高比为 1:1，背景为透明。
 2. 找到相机支持最大的 4:3比例（该比例应该与）的照片尺寸，设置相机参数。
@@ -73,6 +86,8 @@ public void draw(Canvas canvas) {
 }
 ```
 
+
+> 如果解决了你的问题不如给我点个赞吧。
 
 ## 致谢
 
