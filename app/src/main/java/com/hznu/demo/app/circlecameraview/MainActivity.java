@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(), NEEDED_PERMISSION[0])
+        if (ContextCompat.checkSelfPermission(this, NEEDED_PERMISSION[0])
                 != PackageManager.PERMISSION_GRANTED) {
             // 没有相机权限则停止运行
             ActivityCompat.requestPermissions(this, NEEDED_PERMISSION, REQ_CODE);
@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
 
 
 }

@@ -9,7 +9,7 @@
     1. 长宽比为 4:3 比如 width: 400 height: 300
     2. 必须设置 background ，建议使用 透明（@android:color/transparent），否则draw中的剪切无效
     -->
-    <com.hznu.demo.app.circlecameraview.CircleCameraPreview
+    <com.github.cliven.circlecamerapreview.CircleCameraPreview
         android:id="@+id/circle_camera_preview"
         android:layout_gravity="center"
         android:layout_width="400dp"
