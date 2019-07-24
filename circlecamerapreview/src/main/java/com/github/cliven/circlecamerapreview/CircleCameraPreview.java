@@ -109,6 +109,20 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
         return isPreviewing;
     }
 
+    /**
+     * 暂停预览功能
+     *
+     * @param state true - 开启预览； false - 暂停预览
+     */
+    public void pause(boolean state) {
+        if (!state) {
+            isPreviewing = false;
+            mCamera.stopPreview();
+        } else {
+            isPreviewing = true;
+            mCamera.startPreview();
+        }
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
