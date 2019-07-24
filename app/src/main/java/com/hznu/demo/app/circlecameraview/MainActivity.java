@@ -39,8 +39,14 @@ public class MainActivity extends AppCompatActivity {
         circleCameraPreview.setOnPreview((nv21, camera) -> {
             // 人脸识别代码
         });
-    }
 
+
+        circleCameraPreview.setOnClickListener(v -> {
+            // 点击暂停预览，用于模拟识别中情景
+            circleCameraPreview.pause();
+        });
+
+    }
 
 
 }
