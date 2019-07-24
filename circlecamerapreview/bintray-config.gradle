@@ -4,7 +4,7 @@ ext {
 
     publishedGroupId = 'com.github.cliven.circlecamerapreview'
     artifact = 'circlecamerapreview'
-    libraryVersion = '1.0.0'
+    libraryVersion = '1.0.1'
 
     //开源库的描述
     libraryName = 'uploadmodule'

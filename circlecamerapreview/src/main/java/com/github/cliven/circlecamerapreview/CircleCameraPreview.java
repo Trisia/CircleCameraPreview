@@ -20,6 +20,11 @@ import android.view.WindowManager;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * 圆形摄像头预览控件
+ *
+ * 支持暂停预览，圆形的摄像头预览
+ */
 public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
     private static final String TAG = "CircleCameraPreview";
