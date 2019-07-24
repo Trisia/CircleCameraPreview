@@ -59,6 +59,11 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
      */
     private boolean isPreviewing;
 
+    /**
+     * 是否已经设置过窗口尺寸
+     */
+    private boolean isSizeFitted = false;
+
 
     public CircleCameraPreview(Context context) {
         super(context);
@@ -82,6 +87,8 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
         this.setFocusable(true);
         this.setFocusableInTouchMode(true);
         getHolder().addCallback(this);
+        clipPath = new Path();
+        centerPoint = new Point();
     }
 
 
@@ -102,6 +109,7 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
         return isPreviewing;
     }
 
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -109,11 +117,16 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
         // 计算出圆形的中心点
-        centerPoint = new Point(widthSize >> 1, heightSize >> 1);
+        centerPoint.x = widthSize >> 1;
+        centerPoint.y = heightSize >> 1;
         // 计算出最短的边的一半作为半径
-        radius = (widthSize >> 1 > heightSize >> 1) ? heightSize >> 1 : widthSize >> 1;
+        radius = ( centerPoint.x > centerPoint.y) ? centerPoint.y : centerPoint.x;
+        Log.i(TAG, "onMeasure: " + centerPoint.toString());
+        clipPath.reset();
+        clipPath.addCircle(centerPoint.x, centerPoint.y, radius, Path.Direction.CCW);
         setMeasuredDimension(widthSize, heightSize);
     }
+
 
     /**
      * 绘制
@@ -125,11 +138,9 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
         if (clipPath == null) {
             clipPath = new Path();
             //设置裁剪的圆心，半径
-            clipPath.addCircle(centerPoint.x, centerPoint.y, radius, Path.Direction.CCW);
+
         }
         //裁剪画布，并设置其填充方式
-//        canvas.clipPath(clipPath, Region.Op.REPLACE);
-
         if (Build.VERSION.SDK_INT >= 26) {
             canvas.clipPath(clipPath);
         } else {
@@ -198,6 +209,12 @@ public class CircleCameraPreview extends SurfaceView implements SurfaceHolder.Ca
      * @param rotate 旋转角度
      */
     private void changeViewSize(int rotate) {
+        if (isSizeFitted) {
+            // 如果屏幕尺寸已经重设过那么，则认为不需要再设置
+            return;
+        }
+        isSizeFitted = true;
+
         DisplayMetrics metrics = new DisplayMetrics();
         ((WindowManager) getContext()
                 .getSystemService(Context.WINDOW_SERVICE))
