@@ -23,7 +23,7 @@ implementation 'com.github.cliven.circlecamerapreview:circlecamerapreview:1.0.1'
 
 在xml中引用组件
 ```xml
-<com.hznu.demo.app.circlecameraview.CircleCameraPreview
+<com.github.cliven.circlecamerapreview.CircleCameraPreview
     android:layout_width="400dp"
     android:layout_height="400dp"
     android:background="@android:color/transparent" />
