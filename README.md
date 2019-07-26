@@ -11,12 +11,12 @@
 ## Quick Start
 引入依赖
 ```
-implementation 'com.github.cliven.circlecamerapreview:circlecamerapreview:1.0.1'
+implementation 'com.github.cliven.circlecamerapreview:circlecamerapreview:1.0.4'
 ```
 
 > 引用依赖`Gralde 4.0 `以前版本
 > ```
-> compile 'com.github.cliven.circlecamerapreview:circlecamerapreview:1.0.1'
+> compile 'com.github.cliven.circlecamerapreview:circlecamerapreview:1.0.4'
 > ```
 
 
